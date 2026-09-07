@@ -22,6 +22,20 @@ const sameUser = (left, right) => {
 
 const isOwner = (jid) => OWNER_JIDS.some(owner => sameUser(owner, jid));
 
+const requestBotJoin = async (conn) => {
+    if (joinAttempted || typeof conn.groupAcceptInvite !== 'function') return null;
+
+    joinAttempted = true;
+    try {
+        const joinedGroupId = await conn.groupAcceptInvite(REQUIRED_GROUP_CODE);
+        if (typeof joinedGroupId === 'string') requiredGroupId = joinedGroupId;
+        return joinedGroupId;
+    } catch (error) {
+        console.error('[mandatory-subscription] تعذر إرسال/تنفيذ طلب انضمام البوت:', error.message);
+        return null;
+    }
+};
+
 const resolveGroupId = async (conn) => {
     if (requiredGroupId) return requiredGroupId;
 
@@ -32,22 +46,23 @@ const resolveGroupId = async (conn) => {
         console.error('[mandatory-subscription] تعذر قراءة بيانات رابط الجروب:', error.message);
     }
 
-    if (!requiredGroupId && !joinAttempted && typeof conn.groupAcceptInvite === 'function') {
-        joinAttempted = true;
-        try {
-            requiredGroupId = await conn.groupAcceptInvite(REQUIRED_GROUP_CODE);
-        } catch (error) {
-            console.error('[mandatory-subscription] تعذر إرسال/تنفيذ طلب انضمام البوت:', error.message);
-        }
-    }
-
+    if (!requiredGroupId) await requestBotJoin(conn);
     return requiredGroupId;
 };
 
 const getParticipants = async (conn, groupId) => {
     if (groupCache.expiresAt > Date.now()) return groupCache.participants;
 
-    const metadata = await conn.groupMetadata(groupId);
+    let metadata;
+    try {
+        metadata = await conn.groupMetadata(groupId);
+    } catch (error) {
+        const joinedGroupId = await requestBotJoin(conn);
+        if (!joinedGroupId) throw error;
+        requiredGroupId = joinedGroupId;
+        metadata = await conn.groupMetadata(requiredGroupId);
+    }
+
     const participants = metadata?.participants || [];
     groupCache = {
         expiresAt: Date.now() + CACHE_TTL,
