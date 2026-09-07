@@ -1,9 +1,23 @@
+import readline from 'node:readline/promises';
+import { stdin as input, stdout as output } from 'node:process';
+
 const PAIRING_CODE = 'DEVONIC1';
 const DISPLAY_PAIRING_CODE = 'DEVO-NIC1';
 const MAX_WAIT_ATTEMPTS = 40;
 const WAIT_MS = 500;
 
+const ANSI = {
+    reset: '\x1b[0m',
+    bold: '\x1b[1m',
+    cyan: '\x1b[36m',
+    green: '\x1b[32m',
+    gray: '\x1b[90m',
+    red: '\x1b[31m'
+};
+
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+const clearScreen = () => process.stdout.write('\x1b[2J\x1b[H');
+const showLogo = () => console.log(ANSI.bold + ANSI.cyan + 'DEVONIC' + ANSI.reset);
 
 const formatPairingCode = (code) => {
     const normalized = String(code || '').replace(/-/g, '').toUpperCase();
@@ -11,31 +25,80 @@ const formatPairingCode = (code) => {
     return normalized.slice(0, 4) + '-' + normalized.slice(4);
 };
 
+const askPhoneNumber = async (client) => {
+    const rl = readline.createInterface({ input, output });
+    try {
+        const answer = await rl.question(ANSI.cyan + 'رقم واتساب: ' + ANSI.reset);
+        const typedNumber = answer.replace(/\D/g, '');
+        const configuredNumber = String(client.config?.phoneNumber || process.env.BOT_PHONE || '').replace(/\D/g, '');
+        return typedNumber || configuredNumber;
+    } finally {
+        rl.close();
+    }
+};
+
+const withLoadingScreen = async (task) => {
+    let tick = 0;
+    const frames = ['.', '..', '...'];
+    process.stdout.write('\n' + ANSI.gray + 'جاري التحميل' + ANSI.reset);
+    const spinner = setInterval(() => {
+        process.stdout.write('\r' + ANSI.gray + 'جاري التحميل' + frames[tick++ % frames.length] + ANSI.reset);
+    }, 350);
+
+    try {
+        return await task();
+    } finally {
+        clearInterval(spinner);
+        process.stdout.write('\r\x1b[K');
+    }
+};
+
 export async function sub(client) {
     if (!client || typeof client.start !== 'function') {
         throw new TypeError('sub(client) يحتاج إلى كائن Client صالح.');
     }
 
-    await client.start();
+    clearScreen();
+    showLogo();
+    console.log('');
 
-    for (let attempt = 0; attempt < MAX_WAIT_ATTEMPTS; attempt += 1) {
-        if (client.sock?.user?.id) return null;
-        if (typeof client.sock?.requestPairingCode === 'function') break;
-        await sleep(WAIT_MS);
-    }
-
-    if (client.sock?.user?.id) return null;
-    if (typeof client.sock?.requestPairingCode !== 'function') {
-        throw new Error('لم تصبح واجهة كود الربط جاهزة. أعد تشغيل البوت وحاول مرة أخرى.');
-    }
-
-    const phoneNumber = String(client.config?.phoneNumber || '').replace(/\D/g, '');
+    const phoneNumber = await askPhoneNumber(client);
     if (!phoneNumber) {
-        throw new Error('ضع رقم البوت بصيغة دولية في BOT_PHONE بدون علامة +.');
+        throw new Error('رقم واتساب مطلوب بصيغة دولية بدون علامة +.');
     }
 
-    const code = await client.sock.requestPairingCode(phoneNumber, PAIRING_CODE);
-    console.log('🔐 كود الربط: ' + formatPairingCode(code || PAIRING_CODE));
-    console.log('📱 افتح واتساب > الأجهزة المرتبطة > ربط جهاز > الربط برقم الهاتف.');
+    client.config.phoneNumber = phoneNumber;
+    clearScreen();
+    showLogo();
+
+    const code = await withLoadingScreen(async () => {
+        await client.start();
+
+        for (let attempt = 0; attempt < MAX_WAIT_ATTEMPTS; attempt += 1) {
+            if (client.sock?.user?.id) return null;
+            if (typeof client.sock?.requestPairingCode === 'function') break;
+            await sleep(WAIT_MS);
+        }
+
+        if (client.sock?.user?.id) return null;
+        if (typeof client.sock?.requestPairingCode !== 'function') {
+            throw new Error('لم تصبح واجهة كود الربط جاهزة.');
+        }
+
+        return client.sock.requestPairingCode(phoneNumber, PAIRING_CODE);
+    });
+
+    clearScreen();
+    showLogo();
+    console.log('');
+
+    if (!code) {
+        console.log(ANSI.green + 'الحساب مرتبط بالفعل' + ANSI.reset);
+        return null;
+    }
+
+    console.log(ANSI.bold + 'كود الربط' + ANSI.reset);
+    console.log('');
+    console.log(ANSI.bold + ANSI.green + formatPairingCode(code) + ANSI.reset);
     return code;
 }
