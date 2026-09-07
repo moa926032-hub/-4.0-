@@ -43,8 +43,10 @@ pkg install git nodejs -y
 git clone [https://github.com/moa926032-hub/BOT-DEVONIC.git](https://github.com/moa926032-hub/BOT-DEVONIC.git)
 cd BOT-DEVONIC 
 npm install
-npm start**Discount code:** `MO-FORA1ON`
+npm start
 ```
+**Discount code:** `MO-FORA1ON`
+
 </h4>
 
 <div align="center">
