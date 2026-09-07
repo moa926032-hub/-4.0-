@@ -11,7 +11,7 @@ const client = new Client({
   sessionPath: './session',
   showLogs: false,
   owners: [
-    { name: "محمد فرعون", jid: "201515063273@s.whatsapp.net" }
+    { name: "محمد فرعون", jid: "201515063273@s.whatsapp.net", lid: "201515063273@s.whatsapp.net" }
   ],
   settings: { noWelcome: true },
   commandsPath: './plugins',
