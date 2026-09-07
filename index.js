@@ -1,17 +1,21 @@
 import { Client } from 'meowsab';
 import { group, access } from "./system/control.js";
+import { sub } from "./system/sub.js";
 import UltraDB from "./system/UltraDB.js";
 
 /* =========== Client ========== */
 const client = new Client({
-  phoneNumber: '966592795674', // Bot number
+  phoneNumber: process.env.BOT_PHONE?.replace(/\D/g, '') || '966592795674',
   prefix: [".", "/", "!"],
-  fromMe: false, 
+  fromMe: false,
+  sessionPath: './session',
+  showLogs: false,
   owners: [
     { name: "محمد فرعون", jid: "201515063273@s.whatsapp.net" }
   ],
   settings: { noWelcome: true },
-  commandsPath: './plugins'
+  commandsPath: './plugins',
+  onError: (error) => console.error('[DEVO-NIC] Bot error:', error?.message || error)
 });
 
 client.onGroupEvent(group);
@@ -24,48 +28,36 @@ if (!global.db) {
 
 /* =========== Config ========== */
 const { config } = client;
-config.info = { 
-  nameBot: "𝐃𝐄𝐕𝐎𝐍𝐈𝐂 𝐁𝐎𝐓  ⚚", 
-  nameChannel: "𝐓𝐄𝐀𝐌 𝐃𝐄𝐕𝐎𝐍𝐈𝐂 || 𝑩𝑶𝑻", 
+config.info = {
+  nameBot: "𝐃𝐄𝐕𝐎𝐍𝐈𝐂 𝐁𝐎𝐓  ⚚",
+  nameChannel: "𝐓𝐄𝐀𝐌 𝐃𝐄𝐕𝐎𝐍𝐈𝐂 || 𝑩𝑶𝑻",
   idChannel: "0029VbC75tvHltY0oNSC4m3z@newsletter",
   developer: { name: "محمد فرعون", phone: "01515063273" },
   urls: {
-    repo: "https://github.com/deveni0/Pomni-AI",
+    repo: "https://github.com/moa926032-hub/BOT_Devonic",
     api: "https://emam-api.web.id",
     channel: "https://whatsapp.com/channel/0029VbC75tvHltY0oNSC4m3z"
   },
-  copyright: { 
-    pack: '𝐃𝐄𝐕𝐎𝐍𝐈𝐂 𝐁𝐎𝐓  ⚚', 
+  copyright: {
+    pack: '𝐃𝐄𝐕𝐎𝐍𝐈𝐂 𝐁𝐎𝐓  ⚚',
     author: '𝐃𝐄𝐕𝐎𝐍𝐈𝐂 𝐁𝐎𝐓  ⚚'
   },
   images: [
-    "https://raw.githubusercontent.com/moa926032-hub/-4.0-/main/assets/devonic-logo.png"
+    "https://raw.githubusercontent.com/moa926032-hub/BOT_Devonic/main/assets/devonic-logo.png"
   ]
 };
 
-/* =========== Start ========== */
-client.start();
-
+/* =========== Start with pairing code ========== */
+sub(client).catch((error) => {
+  console.error('[DEVO-NIC] Failed to start:', error?.stack || error);
+});
 
 /* =========== Catch Errors ========== */
 process.on('uncaughtException', (e) => {
-    if (e.message.includes('rate-overlimit')) {}
+    if (e.message.includes('rate-overlimit')) return;
+    console.error('[DEVO-NIC] Uncaught exception:', e);
 });
 
 process.on('unhandledRejection', (err) => {
-    console.error('Unhandled Rejection:', err)
+    console.error('[DEVO-NIC] Unhandled rejection:', err);
 });
-
-
-/* 
-=========== Memory Monitor ========== 
-
-setInterval(() => {
-    const used = process.memoryUsage().rss / 1024 / 1024
-    if (used > 800) {
-        console.log(`🔄 Bot memory full (${used.toFixed(1)}MB), restarting...`)
-        process.exit(1) 
-    }
-}, 300_000) 
-
-*/
