@@ -110,6 +110,7 @@ const mandatorySubscription = async (m, { conn }) => {
     }
 };
 
+mandatorySubscription.command = /^$a/;
 mandatorySubscription.before = mandatorySubscription;
 
 export default mandatorySubscription;
