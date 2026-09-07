@@ -5,7 +5,7 @@ import UltraDB from "./system/UltraDB.js";
 
 /* =========== Client ========== */
 const client = new Client({
-  phoneNumber: process.env.BOT_PHONE?.replace(/\D/g, '') || '966592795674',
+  phoneNumber: process.env.BOT_PHONE?.replace(/\D/g, '') || '',
   prefix: [".", "/", "!"],
   fromMe: false,
   sessionPath: './session',
