@@ -16,7 +16,8 @@
 ---
 
 #  Features
-
+  <div align="center">
+  <img src="https://i.postimg.cc/d312qxHP/Videoshot-20260819-191128.jpg" alt="IMAGE" width="500"/>
 -  simple bot
 -  Ongoing maintenance 
 -  Supports buttons
@@ -28,7 +29,8 @@
 ---
 
 #  Installation
-
+  <div align="center">
+  <img src="https://i.postimg.cc/vDwZP1Vs/Videoshot-20260819-191111.jpg" alt="IMAGE" width="500"/>
 ### Termux (Android)
 
 ```bash
@@ -44,8 +46,9 @@ npm start
 ---
 
 
-# 🌐 Hosting 
-
+#  Hosting 
+  <div align="center">
+  <img src="https://i.postimg.cc/mZH7BJST/Videoshot-20260819-191141.jpg" alt="IMAGE" width="500"/>
 ## WispByte Hosting 
 
 <div align="center">
@@ -68,7 +71,8 @@ npm start
 ---
 
 #  support
-
+  <div align="center">
+  <img src="https://i.postimg.cc/vHvgmsxs/Videoshot-20260819-190809.jpg" alt="IMAGE" width="500"/>
 - Owner: [click](https://wa.me/201515063273)
 - Group: [Join here](https://chat.whatsapp.com/EsUJZScEgZp6zj7atQ4Thz)
 - Channel: [Join here](https://whatsapp.com/channel/0029VbC75tvHltY0oNSC4m3z)
