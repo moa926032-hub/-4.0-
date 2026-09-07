@@ -1,4 +1,4 @@
-# 🤍 DEVONIC TEAM - WhatsApp Bot
+#  DEVONIC TEAM - WhatsApp Bot
 
 <div align="center">
   <img src="https://i.postimg.cc/yY1hjksG/Videoshot-20260819-191154.jpg" alt="IMAGE" width="500"/>
@@ -8,26 +8,26 @@
   [![WhatsApp](https://img.shields.io/badge/WhatsApp-Channel-orange?style=for-the-badge&logo=whatsapp)](https://whatsapp.com/channel/0029VbC75tvHltY0oNSC4m3z)
  
   
-  **A simple WhatsApp bot from the Devonic team [Mywebsite](https://devonic-courses.vercel.app/)** 
+  **A simple WhatsApp bot from the Devonic team [Mywebsite](https://devonic-ai.vercel.app/)** 
   
    [Installation](#-installation) • [Support](#-support) • [Features](#-features) • [Hosting](#-hosting)
 </div>
 
 ---
 
-# 🌹 Features
+#  Features
 
-- ✅ simple bot
-- ✅ Ongoing maintenance 
-- ✅ Supports buttons
-- ✅ Supports downloads 
-- ✅ It supports advanced bot features
-- ✅ Very easy to modify 
-- ✅ Very fast bot
+-  simple bot
+-  Ongoing maintenance 
+-  Supports buttons
+-  Supports downloads 
+-  It supports advanced bot features
+-  Very easy to modify 
+-  Very fast bot
 
 ---
 
-# 🚀 Installation
+#  Installation
 
 ### Termux (Android)
 
@@ -67,7 +67,7 @@ npm start
 
 ---
 
-# 👤 support
+#  support
 
 - Owner: [click](https://wa.me/201515063273)
 - Group: [Join here](https://chat.whatsapp.com/EsUJZScEgZp6zj7atQ4Thz)
@@ -78,7 +78,7 @@ npm start
 
 <div align="center">
 
-**Made with ❤️ by [MO Owner](https://github.com/moa926032-hub)**
+**Made with ❤️ by [Devonic team](https://github.com/moa926032-hub)**
 
 **© 2026 Devonic team - All Rights Reserved**
 
