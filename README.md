@@ -47,22 +47,24 @@ npm start**Discount code:** `MO-FORA1ON`
 ```
 </h4>
 
+<div align="center">
+
 [![Website](https://img.shields.io/badge/Website-WispByte-orange?style=for-the-badge&logo=website)](https://wispbyte.com/client)
 [![WhatsApp](https://img.shields.io/badge/WhatsApp-Channel-blue?style=for-the-badge&logo=whatsapp)](https://whatsapp.com/channel/0029VbC75tvHltY0oNSC4m3z)
- 
 
 </div>
 
-
 ---
 
-#  support
-  <div align="center">
-  <img src="https://i.postimg.cc/vHvgmsxs/Videoshot-20260819-190809.jpg" alt="IMAGE" width="500"/>
-- Owner: [click](https://wa.me/201515063273)
-- Group: [Join here](https://chat.whatsapp.com/EsUJZScEgZp6zj7atQ4Thz)
-- Channel: [Join here](https://whatsapp.com/channel/0029VbC75tvHltY0oNSC4m3z)
+# Support
 
+<div align="center">
+  <img src="https://i.postimg.cc/vHvgmsxs/Videoshot-20260819-190809.jpg" alt="IMAGE" width="500"/>
+</div>
+
+- **Owner:** [Click here](https://wa.me/201515063273)
+- **Group:** [Join here](https://chat.whatsapp.com/EsUJZScEgZp6zj7atQ4Thz)
+- **Channel:** [Join here](https://whatsapp.com/channel/0029VbC75tvHltY0oNSC4m3z)
 
 ---
 
