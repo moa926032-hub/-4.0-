@@ -1,5 +1,17 @@
-import { ytmp3, ytmp4 } from 'ruhend-scraper'; // مكتبة بديلة وسريعة جداً للتحميل
 import yts from 'yt-search';
+
+const getDownloadData = async (url) => {
+  const response = await fetch(
+    `https://api.vyt.workers.dev/?url=${encodeURIComponent(url)}`
+  );
+
+  if (!response.ok) {
+    throw new Error(`خدمة تحميل يوتيوب أعادت الحالة ${response.status}`);
+  }
+
+  const payload = await response.json();
+  return payload?.data || payload;
+};
 
 const handler = async (m, { conn, command, text }) => {
   try {
@@ -42,23 +54,13 @@ const handler = async (m, { conn, command, text }) => {
       }
     }, { quoted: m });
 
-    // استخراج رابط التنزيل عبر Scraper بديل مستقر
-    let mediaData;
-    if (isAudio) {
-      mediaData = await ytmp3(text);
-    } else {
-      mediaData = await ytmp4(text);
-    }
+    // خدمة التحميل لا تصدر ytmp3/ytmp4 من ruhend-scraper؛
+    // نستخدم خدمة التحميل الحالية مباشرة لتجنب استيراد دوال غير موجودة.
+    const mediaData = await getDownloadData(text);
 
-    if (!mediaData || !mediaData.audio || !mediaData.video) {
-      // محاولة احتياطية في حال تعثر السيرفر الأول
-      const backupRes = await fetch(`https://api.vyt.workers.dev/?url=${encodeURIComponent(text)}`).then(r => r.json()).catch(() => null);
-      if (backupRes && backupRes.url) {
-        mediaData = { audio: backupRes.url, video: backupRes.url };
-      }
-    }
-
-    const downloadUrl = isAudio ? (mediaData.audio || mediaData.link) : (mediaData.video || mediaData.link);
+    const downloadUrl = isAudio
+      ? (mediaData?.audio || mediaData?.audioUrl || mediaData?.link || mediaData?.url)
+      : (mediaData?.video || mediaData?.videoUrl || mediaData?.link || mediaData?.url);
 
     if (!downloadUrl) return m.reply('❌ فشل في استخراج رابط التحميل النهائي، حاول لاحقاً.');
 

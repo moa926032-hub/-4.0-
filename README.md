@@ -6,14 +6,17 @@
 
 ```bash
 pkg update -y && pkg upgrade -y
-pkg install -y git nodejs-lts
+pkg install -y git nodejs-lts ffmpeg
 
 git clone https://github.com/moa926032-hub/BOT_Devonic.git
 cd -- BOT_Devonic
-npm install
+npm install --include=optional
 termux-wake-lock
 npm start
 ```
+
+> ملاحظة: يحتوي المشروع على دعم WebAssembly لـ `sharp` حتى تعمل معالجة الصور
+> على Termux/Android بدون اعتماد على نسخة `android-arm64` غير المدعومة.
 
 بعد تشغيل البوت ستظهر شاشة نظيفة باسم **DEVONIC**، ثم:
 

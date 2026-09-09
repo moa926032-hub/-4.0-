@@ -3,7 +3,7 @@ const handler = async (m, { conn, text, command }) => {
 
     const actions = {
         'جروب_اسم': async () => {
-            if (!text) return m.reply(*'✏️ ¦ اكتب الاسم الجديد*');
+            if (!text) return m.reply('*✏️ ¦ اكتب الاسم الجديد*');
             await conn.groupUpdateSubject(m.chat, text);
             m.reply('*✅  تم تغيير اسم المجموعة*');
         },
