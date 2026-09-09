@@ -1,5 +1,6 @@
 import readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
+import { useMultiFileAuthState } from '@whiskeysockets/baileys';
 
 const PAIRING_CODE = 'DEVONIC1';
 const DISPLAY_PAIRING_CODE = 'DEVO-NIC1';
@@ -62,6 +63,20 @@ export async function sub(client) {
     showLogo();
     console.log('');
 
+    const sessionPath = client.config?.sessionPath || './session';
+    const { state } = await useMultiFileAuthState(sessionPath);
+
+    // لا نعتمد على sock.user.id؛ يمكن أن يظهر أثناء تهيئة socket
+    // قبل أن نعرف هل بيانات الاعتماد مربوطة فعلًا أم لا.
+    if (state.creds.registered) {
+        await withLoadingScreen(() => client.start());
+        clearScreen();
+        showLogo();
+        console.log('');
+        console.log(ANSI.green + 'الحساب مرتبط بالفعل' + ANSI.reset);
+        return null;
+    }
+
     const phoneNumber = await askPhoneNumber(client);
     if (!phoneNumber) {
         throw new Error('رقم واتساب مطلوب بصيغة دولية بدون علامة +.');
@@ -75,12 +90,10 @@ export async function sub(client) {
         await client.start();
 
         for (let attempt = 0; attempt < MAX_WAIT_ATTEMPTS; attempt += 1) {
-            if (client.sock?.user?.id) return null;
             if (typeof client.sock?.requestPairingCode === 'function') break;
             await sleep(WAIT_MS);
         }
 
-        if (client.sock?.user?.id) return null;
         if (typeof client.sock?.requestPairingCode !== 'function') {
             throw new Error('لم تصبح واجهة كود الربط جاهزة.');
         }
@@ -91,11 +104,6 @@ export async function sub(client) {
     clearScreen();
     showLogo();
     console.log('');
-
-    if (!code) {
-        console.log(ANSI.green + 'الحساب مرتبط بالفعل' + ANSI.reset);
-        return null;
-    }
 
     console.log(ANSI.bold + 'كود الربط' + ANSI.reset);
     console.log('');
