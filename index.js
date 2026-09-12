@@ -10,7 +10,7 @@ const client = new Client({
   fromMe: false, 
   owners: [
   // Owner 1
-    { name: "????1??", lid: "156556473708763@lid", jid: "201515063273@s.whatsapp.net" },
+    { name: "𝑭𝑶𝑹𝑨1𝑶𝑵", lid: "156556473708763@lid", jid: "201515063273@s.whatsapp.net" },
   // Owner 2
     { name: "FORA1ON", lid: "201515063273", jid: "218930171336@s.whatsapp.net" },
   // Owner 3
@@ -33,8 +33,8 @@ if (!global.db) {
 /* =========== Config ========== */
 const { config } = client;
 config.info = { 
-  nameBot: "?.?.? ???", 
-  nameChannel: "?????????", 
+  nameBot: "𝑱.𝑨.𝑵 𝑩𝑶𝑻", 
+  nameChannel: "𝑭𝒍𝒂𝒔𝒉𝒃𝒂𝒄𝒌", 
   idChannel: "120363401670228863@newsletter",
   urls: {
     repo: "https://github.com/deveni0/Pomni-AI",
